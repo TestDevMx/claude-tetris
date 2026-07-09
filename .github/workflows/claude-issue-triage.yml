@@ -44,7 +44,10 @@ jobs:
                a menos que sea claramente incorrecto.
 
             2. Publica UN comentario en el issue con `gh issue comment` que contenga un
-               diagnóstico general y conciso:
+               diagnóstico general y conciso, escrito en formato Markdown válido que
+               GitHub pueda renderizar correctamente (usa encabezados `##`/`###`,
+               listas con `-`, y bloques de código con comillas invertidas para
+               nombres de archivo/función):
                - Resumen del problema en 1-2 frases.
                - Área(s) del código probablemente implicadas (archivo y función/es de
                  game.js según corresponda).
