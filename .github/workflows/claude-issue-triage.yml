@@ -1,0 +1,57 @@
+name: Claude Issue Triage
+
+on:
+  issues:
+    types: [opened, edited]
+
+jobs:
+  triage:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+      id-token: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Run Claude Issue Triage
+        uses: anthropics/claude-code-action@v1
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          claude_args: |
+            --allowed-tools "Bash(gh issue edit:*),Bash(gh issue view:*),Bash(gh issue comment:*),Bash(gh label list:*)"
+          prompt: |
+            Analiza el issue #${{ github.event.issue.number }} de este repositorio
+            (título y cuerpo obtenidos con `gh issue view ${{ github.event.issue.number }}`).
+
+            Este proyecto es un Tetris en JavaScript vanilla (ver CLAUDE.md para la
+            arquitectura: board/current/next, colisiones en `collide()`, rotación en
+            `rotateCW`/`tryRotate`, loop de juego en `loop()`/`spawn()`/`lockPiece()`,
+            scoring/leveling, render en `draw()`/`drawNext()`, e input en el listener
+            de `keydown`).
+
+            Haz dos cosas:
+
+            1. Asigna con `gh issue edit ${{ github.event.issue.number }} --add-label "..."`
+               los labels que correspondan, eligiendo ÚNICAMENTE entre los labels
+               existentes del repo: bug, documentation, duplicate, enhancement,
+               good first issue, help wanted, invalid, question, wontfix.
+               No crees labels nuevos. No quites labels que no correspondan a tu análisis
+               a menos que sea claramente incorrecto.
+
+            2. Publica UN comentario en el issue con `gh issue comment` que contenga un
+               diagnóstico general y conciso:
+               - Resumen del problema en 1-2 frases.
+               - Área(s) del código probablemente implicadas (archivo y función/es de
+                 game.js según corresponda).
+               - Hipótesis de causa raíz (si aplica; para features/preguntas, describe
+                 el impacto esperado en vez de una causa raíz).
+               - Enfoque de solución sugerido a alto nivel (sin escribir el código de
+                 la solución todavía — esto es solo diagnóstico para guiar el trabajo
+                 posterior).
+
+               No hagas cambios de código ni abras PRs en este workflow.
