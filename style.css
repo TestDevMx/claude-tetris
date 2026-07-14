@@ -196,6 +196,76 @@ kbd {
   color: var(--kbd-color);
 }
 
+/* ---- Leaderboard (panel) ---- */
+.leaderboard-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  counter-reset: rank;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 12px;
+}
+
+.leaderboard-list li {
+  counter-increment: rank;
+  color: var(--fg);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.leaderboard-list li::before {
+  content: counter(rank) '.';
+  color: var(--label-color);
+  min-width: 14px;
+}
+
+.leaderboard-list li.leaderboard-empty {
+  color: var(--controls-color);
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+.leaderboard-list li.leaderboard-empty::before {
+  content: '';
+}
+
+.leaderboard-list li.is-new-record {
+  color: var(--value-color);
+  font-weight: 700;
+  text-shadow: 0 0 8px var(--title-glow);
+}
+
+.leaderboard-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 11px;
+  color: var(--controls-color);
+}
+
+.leaderboard-stats strong {
+  color: var(--value-color);
+}
+
+.reset-records-btn {
+  margin-top: 4px;
+  background: transparent;
+  color: var(--controls-color);
+  border: 1px solid var(--kbd-border);
+  border-radius: 4px;
+  padding: 6px 10px;
+  font-size: 10px;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.reset-records-btn:hover {
+  color: var(--overlay-title-color);
+  border-color: var(--overlay-title-color);
+}
+
 /* ---- Overlay ---- */
 .overlay {
   position: absolute;
@@ -248,5 +318,110 @@ kbd {
 }
 
 #restart-btn:hover {
+  background: var(--restart-hover);
+}
+
+/* ---- Overlay leaderboard / name entry ---- */
+.overlay-leaderboard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.overlay-leaderboard.hidden {
+  display: none;
+}
+
+.overlay-leaderboard .label {
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: var(--label-color);
+  font-weight: 600;
+}
+
+#overlay-leaderboard-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  counter-reset: rank;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 13px;
+}
+
+#overlay-leaderboard-list li {
+  counter-increment: rank;
+  color: var(--fg);
+}
+
+#overlay-leaderboard-list li::before {
+  content: counter(rank) '. ';
+  color: var(--label-color);
+}
+
+#overlay-leaderboard-list li.leaderboard-empty {
+  color: var(--controls-color);
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+#overlay-leaderboard-list li.leaderboard-empty::before {
+  content: '';
+}
+
+#overlay-leaderboard-list li.is-new-record {
+  color: var(--value-color);
+  font-weight: 700;
+  text-shadow: 0 0 8px var(--title-glow);
+}
+
+.name-entry {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.name-entry.hidden {
+  display: none;
+}
+
+.name-entry label {
+  font-size: 12px;
+  color: var(--overlay-title-color);
+  text-align: center;
+}
+
+.name-entry input {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 14px;
+  padding: 6px 10px;
+  border-radius: 4px;
+  border: 1px solid var(--kbd-border);
+  background: var(--kbd-bg);
+  color: var(--fg);
+  text-align: center;
+  width: 140px;
+}
+
+.name-entry input:focus {
+  outline: none;
+  border-color: var(--value-color);
+}
+
+#save-name-btn {
+  background: var(--restart-bg);
+  color: var(--restart-color);
+  border: none;
+  border-radius: 6px;
+  padding: 6px 20px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  letter-spacing: 1px;
+  transition: background 0.15s;
+}
+
+#save-name-btn:hover {
   background: var(--restart-hover);
 }
